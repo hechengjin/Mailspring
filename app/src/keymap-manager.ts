@@ -105,9 +105,9 @@ export default class KeymapManager {
   userKeymap?: KeymapFile;
   _unobserveTemplate?: Disposable;
   _removeTemplate?: Disposable;
-  _bindingsCache: {};
-  _commandsCache: {};
-  _altKeyDown: boolean = false;
+  _bindingsCache: any;
+  _commandsCache: any;
+  _altKeyDown = false;
   _altKeyTimer: NodeJS.Timeout = null;
 
   EVENT_ALT_KEY_STATE_CHANGE = 'alt-key-state-change';

@@ -1,6 +1,5 @@
 import url from 'url';
 import React from 'react';
-import PropTypes from 'prop-types';
 import { shell } from 'electron';
 import ReactDOM from 'react-dom';
 import classnames from 'classnames';
@@ -93,7 +92,7 @@ type WebviewState = {
 export default class Webview extends React.Component<WebviewProps, WebviewState> {
   static displayName = 'Webview';
 
-  _mounted: boolean = false;
+  _mounted = false;
   _disposable?: Disposable;
 
   state: WebviewState = {
@@ -233,7 +232,7 @@ export default class Webview extends React.Component<WebviewProps, WebviewState>
   render() {
     return (
       <div className="webview-wrap">
-        <webview ref="webview" partition="in-memory-only" />
+        <webview ref="webview" partition="in-memory-only" enableremotemodule="false" />
         <div className={`webview-loading-spinner loading-${this.state.webviewLoading}`}>
           <RetinaImg
             style={{ width: 20, height: 20 }}

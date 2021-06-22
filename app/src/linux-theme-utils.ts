@@ -121,7 +121,7 @@ function getThemeName(): string {
  * @returns {object} parsed ini file
  * @private
  */
-function __parseIconTheme(themePath: string): object {
+function __parseIconTheme(themePath: string): IconThemeData | null {
   const themeIndex = path.join(themePath, 'index.theme');
   if (fs.existsSync(themeIndex)) {
     return ini.parse(fs.readFileSync(themeIndex, 'utf-8'));
@@ -135,7 +135,7 @@ function __parseIconTheme(themePath: string): object {
  * @param {string} themeName to parse
  * @returns {IconTheme} containing the parsed index.theme file and path to the theme
  */
-function getIconTheme(themeName): IconTheme {
+function getIconTheme(themeName: string): IconTheme {
   if (!themeName) return null;
 
   for (const themesPath of ICON_THEME_PATHS) {
@@ -151,9 +151,19 @@ function getIconTheme(themeName): IconTheme {
   return null;
 }
 
+type IconThemeData = {
+  [sectionName: string]: {
+    Context?: string;
+    Size?: string;
+    MinSize?: string;
+    MaxSize?: string;
+    Scale?: any;
+  };
+};
+
 type IconTheme = {
   themePath: string;
-  data: object;
+  data: IconThemeData;
 };
 
 /**
@@ -224,7 +234,7 @@ function getIconFromTheme(
   scale: 1 | 2 = 1
 ) {
   const icons = __getAllIconPaths(theme, iconName, size, contexts, scale);
-  for (let path of icons) {
+  for (const path of icons) {
     if (fs.existsSync(path)) {
       return fs.realpathSync(path);
     }
@@ -258,7 +268,7 @@ function getIconPath(iconName: string, size: number, context: string | string[],
   }
 
   // in case the icon was not found in the theme, we search the inherited themes
-  for (let key of inherits) {
+  for (const key of inherits) {
     const inheritsTheme = getIconTheme(inherits[key]);
     if (!inheritsTheme) continue;
     icon = getIconFromTheme(inheritsTheme, iconName, size, context);

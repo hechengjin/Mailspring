@@ -18,7 +18,7 @@ import {
 
 import SidebarItem from './sidebar-item';
 import * as SidebarActions from './sidebar-actions';
-import { ISidebarSection } from './types';
+import { ISidebarSection, ISidebarItem } from './types';
 
 function isSectionCollapsed(title) {
   if (AppEnv.savedState.sidebarKeysCollapsed[title] !== undefined) {
@@ -53,7 +53,7 @@ class SidebarSection {
       return this.empty(account.label);
     }
 
-    const items = _.reject(cats, cat => cat.role === 'drafts').map(cat =>
+    const items = _.reject(cats, cat => ['drafts', 'snoozed'].includes(cat.role)).map(cat =>
       SidebarItem.forCategories([cat], { editable: false, deletable: false })
     );
 
@@ -95,19 +95,11 @@ class SidebarSection {
       return this.standardSectionForAccount(accounts[0]);
     }
 
-    const standardNames = [
-      'inbox',
-      'important',
-      'snoozed',
-      'sent',
-      ['archive', 'all'],
-      'spam',
-      'trash',
-    ];
+    const standardNames = ['inbox', 'important', 'sent', ['archive', 'all'], 'spam', 'trash'];
     const items = [];
 
-    for (var names of standardNames) {
-      names = Array.isArray(names) ? names : [names];
+    for (const nameOrNames of standardNames) {
+      const names = Array.isArray(nameOrNames) ? nameOrNames : [nameOrNames];
       const categories = CategoryStore.getCategoriesWithRoles(accounts, ...names);
       if (categories.length === 0) {
         continue;
@@ -177,7 +169,7 @@ class SidebarSection {
   }
 
   static forUserCategories(
-    account,
+    account: Account,
     { title, collapsible }: { title?: string; collapsible?: boolean } = {}
   ): ISidebarSection {
     let onCollapseToggled;
@@ -192,15 +184,16 @@ class SidebarSection {
     // Inbox.FolderA.FolderB
     // Inbox.FolderB
     //
-    const items = [];
-    const seenItems = {};
-    for (let category of CategoryStore.userCategories(account)) {
+    const items: ISidebarItem[] = [];
+    const seenItems: { [key: string]: ISidebarItem } = {};
+    for (const category of CategoryStore.userCategories(account)) {
       // https://regex101.com/r/jK8cC2/1
-      var item, parentKey;
+      let item: ISidebarItem = null;
       const re = RegExpUtils.subcategorySplitRegex();
       const itemKey = category.displayName.replace(re, '/');
 
       let parent = null;
+      let parentKey: string = null;
       const parentComponents = itemKey.split('/');
       for (let i = parentComponents.length; i >= 1; i--) {
         parentKey = parentComponents.slice(0, i).join('/');
@@ -239,12 +232,14 @@ class SidebarSection {
     if (collapsible) {
       onCollapseToggled = toggleSectionCollapsed;
     }
+    const titleColor = account.color;
 
     return {
       title,
       iconName,
       items,
       collapsed,
+      titleColor,
       onCollapseToggled,
       onItemCreated(displayName) {
         if (!displayName) {

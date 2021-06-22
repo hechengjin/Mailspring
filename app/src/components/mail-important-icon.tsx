@@ -11,6 +11,7 @@ import {
   AccountStore,
   Thread,
   Category,
+  Label,
 } from 'mailspring-exports';
 import { Disposable } from 'rx-core';
 
@@ -42,12 +43,12 @@ class MailImportantIcon extends React.Component<MailImportantIconProps, MailImpo
   }
 
   getState = (props = this.props) => {
-    let category = null;
+    let category: Category = null;
     let visible = false;
 
     if (props.showIfAvailableForAnyAccount) {
       const perspective = FocusedPerspectiveStore.current();
-      for (let accountId of perspective.accountIds) {
+      for (const accountId of perspective.accountIds) {
         const account = AccountStore.accountForId(accountId);
         const accountImportant = CategoryStore.getCategoryByRole(account, 'important');
         if (accountImportant) {
@@ -65,7 +66,8 @@ class MailImportantIcon extends React.Component<MailImportantIconProps, MailImpo
       visible = category != null;
     }
 
-    const isImportant = category && _.findWhere(props.thread.labels, { id: category.id }) != null;
+    const isImportant =
+      category && _.findWhere(props.thread.labels, { id: category.id } as Partial<Label>) != null;
 
     return { visible, category, isImportant };
   };
@@ -123,7 +125,8 @@ class MailImportantIcon extends React.Component<MailImportantIconProps, MailImpo
     const { category } = this.state;
 
     if (category) {
-      const isImportant = _.findWhere(this.props.thread.labels, { id: category.id }) != null;
+      const isImportant =
+        _.findWhere(this.props.thread.labels, { id: category.id } as Partial<Label>) != null;
 
       if (!isImportant) {
         Actions.queueTask(

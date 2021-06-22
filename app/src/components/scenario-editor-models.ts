@@ -96,7 +96,12 @@ export const Comparators = {
         name: localized('equals'),
         arrayMatchFn: Array.prototype.some,
       },
-      ({ actual, desired }) => actual.toLowerCase() === desired.toLowerCase()
+      ({ actual, desired }) => {
+        if (!actual || !desired) {
+          return actual === desired;
+        }
+        return actual.toLowerCase() === desired.toLowerCase();
+      }
     ),
 
     matchesExpression: new Comparator(
@@ -130,7 +135,7 @@ export class Template {
   values: Observable<TemplateEnumValue[]> | TemplateEnumValue[] | undefined;
   valueLabel: string | undefined;
   valueForMessage?: (message: Message) => any;
-  comparators: {};
+  comparators: { [comparatorKey: string]: Comparator };
 
   constructor(key, type, options: Partial<Template> = {}) {
     this.key = key;

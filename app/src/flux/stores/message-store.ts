@@ -8,15 +8,15 @@ import FocusedPerspectiveStore from './focused-perspective-store';
 import FocusedContentStore from './focused-content-store';
 import * as ExtensionRegistry from '../../registries/extension-registry';
 import electron from 'electron';
-import DatabaseChangeRecord from './database-change-record';
 import { MessageViewExtension } from 'mailspring-exports';
+import { DatabaseChangeRecord } from './database-change-record';
 
 const FolderNamesHiddenByDefault = ['spam', 'trash'];
 
 class _MessageStore extends MailspringStore {
   FolderNamesHiddenByDefault = FolderNamesHiddenByDefault;
 
-  _showingHiddenItems: boolean = false;
+  _showingHiddenItems = false;
   _items?: Message[];
   _thread?: Thread;
   _itemsExpanded: { [messageId: string]: 'explicit' | 'default' };
@@ -114,7 +114,7 @@ class _MessageStore extends MailspringStore {
     return this.trigger();
   }
 
-  _onDataChanged(change) {
+  _onDataChanged(change: DatabaseChangeRecord<any>) {
     if (!this._thread) return;
 
     if (change.objectClass === Message.name) {
@@ -179,7 +179,7 @@ class _MessageStore extends MailspringStore {
   }
 
   _onApplyFocusChange() {
-    const focused = FocusedContentStore.focused('thread');
+    const focused = FocusedContentStore.focused('thread') as Thread;
     if (focused === null) {
       this._lastMarkedAsReadThreadId = null;
     }
@@ -200,7 +200,7 @@ class _MessageStore extends MailspringStore {
   }
 
   _setWindowTitle() {
-    let title = 'Mailspring' + (this._thread ? ' · ' + this._thread.subject : '');
+    const title = 'Mailspring' + (this._thread ? ' · ' + this._thread.subject : '');
     electron.remote.getCurrentWindow().setTitle(title);
   }
 
@@ -318,7 +318,7 @@ class _MessageStore extends MailspringStore {
   }
 
   _fetchExpandedAttachments(items) {
-    for (let item of items) {
+    for (const item of items) {
       if (!this._itemsExpanded[item.id]) continue;
       item.files.map(file => Actions.fetchFile(file));
     }

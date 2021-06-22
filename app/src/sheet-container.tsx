@@ -14,7 +14,10 @@ interface SheetContainerState {
   error?: string;
 }
 
-export default class SheetContainer extends React.Component<{}, SheetContainerState> {
+export default class SheetContainer extends React.Component<
+  Record<string, unknown>,
+  SheetContainerState
+> {
   static displayName = 'SheetContainer';
 
   _toolbarComponents = {};
@@ -61,7 +64,7 @@ export default class SheetContainer extends React.Component<{}, SheetContainerSt
     this.setState(this._getStateFromStores());
   };
 
-  _lastToolbarClickTime: number = 0;
+  _lastToolbarClickTime = 0;
 
   _onToolbarDoubleClick = (e: React.MouseEvent<HTMLDivElement>) => {
     if (process.platform !== 'darwin') return;

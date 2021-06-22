@@ -3,7 +3,7 @@ import { Utils, DOMUtils, Account, AccountStore } from 'mailspring-exports';
 import { OutlineView, ScrollRegion, Flexbox } from 'mailspring-component-kit';
 import AccountSwitcher from './account-switcher';
 import SidebarStore from '../sidebar-store';
-import { ISidebarSection, ISidebarItem } from '../types';
+import { ISidebarSection } from '../types';
 
 interface AccountSidebarState {
   accounts: Account[];
@@ -12,7 +12,10 @@ interface AccountSidebarState {
   standardSection: ISidebarSection;
 }
 
-export default class AccountSidebar extends React.Component<{}, AccountSidebarState> {
+export default class AccountSidebar extends React.Component<
+  Record<string, unknown>,
+  AccountSidebarState
+> {
   static displayName = 'AccountSidebar';
 
   static containerRequired = false;

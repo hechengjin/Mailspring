@@ -15,7 +15,7 @@ import SidebarSection from './sidebar-section';
 import * as SidebarActions from './sidebar-actions';
 import * as AccountCommands from './account-commands';
 import { Disposable } from 'event-kit';
-import { ISidebarItem, ISidebarSection } from './types';
+import { ISidebarSection } from './types';
 
 const Sections = {
   Standard: 'Standard',
@@ -87,7 +87,7 @@ class SidebarStore extends MailspringStore {
   _onSetCollapsedByName = (itemName: string, collapsed: boolean) => {
     let item = this.standardSection().items.find(i => i.name === itemName);
     if (!item) {
-      for (let section of this.userSections()) {
+      for (const section of this.userSections()) {
         item = _.findWhere(section.items, { name: itemName });
         if (item) {
           break;

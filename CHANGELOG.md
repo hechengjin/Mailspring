@@ -1,5 +1,91 @@
 # Mailspring Changelog
 
+### 1.9.1 (4/16/2021)
+
+**Fixes:**
+
+- Mailspring no longer closes after you link your first account if the system tray has not been configured.
+
+- Mailspring's connections to its database no longer time out (causing the red account warning) while syncing more than ~4 accounts, thanks to an updated build of SQLite.
+
+Thanks to everyone for reporting these issues and contributing the information we needed to track them down!
+
+### 1.9.0 (4/13/2021)
+
+**Features:**
+
+- Mailspring no longer requires a Mailspring ID! You can opt-out in the app's setup flow and connect your email accounts without first creating a Mailspring ID. Doing so disables features that require paid APIs and cloud data storage (send later, read receipts, etc.), but you can opt in and create an account at any time from Preferences > Subscription.
+
+- Mailspring has moved to Discourse for bug, feature, and issue management, and the app now links to resources in the community instead of Zendesk! (#2263)
+
+- A third display mode allows you to vertically stack the inbox and message panes! (#2243)
+
+- Preferences > General now allows you to choose "Send and Archive" as the default send behavior (#2295)
+
+**Fixes:**
+
+- On Linux, a new desktop action allows you to compose new e-mail #2276
+
+- Emails with an unsubscribe link now display an unsubscribe option above the message body (#2275)
+
+- Closing the main window when the system tray / background notifications are disabled quits Mailspring (#2279)
+
+- Portguese, Korean, and Czech are now verified localizations, thanks to @smarquespt, @Indosaram and @BlueManCZ!
+
+- "Run on Startup" UI state is now persistent #2265 (#2266) (Thanks @codemouse92)
+
+- The tray icon does not appear multiple times on linux (#2262) (Thanks @Phylu)
+
+- Decrease container minWidth to allow window to snap to half a screen (#2283)
+
+- Background start now works in maximized mode (#2259)
+
+- Select all keyboard shortcuts now match your OS as well as the shortcuts template (#2260)
+
+- A new menu item allows you to "Mark All as Read" in one action (#2164)
+
+- Handle nautilus-sendto links (#2291)
+
+- The subject header now appears in expanded message view (#2293)
+
+- Messages containing large blocks of machine-generated text (eg adaptivecards) no longer take forever to display.
+
+- Emails with reminders now display the "header toggle control" in the correct position.
+
+**Developer:**
+
+- Mailspring now uses Electron 8.5.5 which includes performance improvements and security patches.
+
+- "Toggle Localizer Tools" has been removed, please use PRs to submit localizations!
+
+### 1.8.0 (1/19/2021)
+
+**Features:**
+
+- You can now choose a color for each account in Preferences > Accounts and conversations in the unified mailbox are colorized! (#2240, thanks @Phylu)
+
+**Fixes:**
+
+- The search bar's placeholder text now reflects the accounts you're viewing (#2252, thanks @Phylu)
+
+- The "equal to" mail rule logic now supports matching against empty strings (eg subject = "No Subject") correctly (#2254, thanks @Phylu)
+
+- Updated Turkish, Bengali, Chinese, and French translations (thanks @emintufan, @EwenQuim, @Aftabuzzaman and @johnpoint)
+
+- Support for pasting files sent in the text/uri-list format or as a secondary pasteboard item (@akdor1154)
+
+- Autofill for the Hostinger email provider (@merkys7)
+
+- The Yandex connection screen now includes instructions to enable IMAP #2111
+
+- The event header that appears when an email contains an ICS attachment now shows the correct timezone. #2093, #2255
+
+- On Linux, Mailspring no longer specifies `python` or `git` as package dependencies unnecessarily.
+
+**Developer:**
+
+- Mailspring now uses Electron 4.2.12 in preparation for a jump to Electron 8+.
+
 ### 1.7.8 (5/24/2020)
 
 **Fixes:**

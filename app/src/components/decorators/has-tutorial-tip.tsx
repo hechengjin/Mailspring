@@ -116,7 +116,7 @@ export default function HasTutorialTip(ComposedComponent, TipConfig) {
     return ComposedComponent;
   }
 
-  return class extends React.Component<{}, { visible: boolean }> {
+  return class extends React.Component<Record<string, unknown>, { visible: boolean }> {
     static displayName = ComposedComponent.displayName;
     static containerRequired = ComposedComponent.containerRequired;
     static containerStyles = ComposedComponent.containerStyles;
@@ -126,7 +126,7 @@ export default function HasTutorialTip(ComposedComponent, TipConfig) {
 
     _workspaceTimer?: NodeJS.Timeout;
     _themesTimer?: NodeJS.Timeout;
-    _mounted: boolean = false;
+    _mounted = false;
     _disposables: Disposable[];
     _unlisteners = [];
 

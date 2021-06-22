@@ -84,7 +84,7 @@ class RootWithTimespan extends React.Component<
     accountIds: PropTypes.arrayOf(PropTypes.string),
   };
 
-  _mounted: boolean = false;
+  _mounted = false;
 
   constructor(props) {
     super(props);
@@ -123,6 +123,7 @@ class RootWithTimespan extends React.Component<
 
   async _forEachMessageIn(accountIds, startUnix, endUnix, callback) {
     let chunkStartUnix = startUnix;
+    // eslint-disable-next-line no-constant-condition
     while (true) {
       const messages = await this._onFetchChunk(accountIds, chunkStartUnix, endUnix);
       if (!this._mounted) {
@@ -234,7 +235,7 @@ class RootWithTimespan extends React.Component<
     }
 
     // Aggregate open/link tracking of outbound threads by subject line
-    let bySubject: { [subject: string]: SubjectStatsEntry } = {};
+    const bySubject: { [subject: string]: SubjectStatsEntry } = {};
     for (const stats of outboundThreadStats) {
       if (!stats.tracked) {
         continue;
